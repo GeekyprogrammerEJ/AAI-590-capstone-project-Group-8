@@ -1,0 +1,13 @@
+{
+  "01_loaded_total": 199456,
+  "02_dropped_empty_question": 0,
+  "03_dropped_missing_answer": 0,
+  "04_dropped_invalid_mcq": 43,
+  "05_dropped_duplicates": 56,
+  "06_clean_total": 199357,
+  "per_source_clean_counts": {
+    "medmcqa": 186906,
+    "medqa": 11451,
+    "pubmedqa": 1000
+  }
+}

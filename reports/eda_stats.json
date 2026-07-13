@@ -1,0 +1,173 @@
+{
+  "n_rows": 199357,
+  "dataset_sizes": {
+    "medmcqa": 186906,
+    "medqa": 11451,
+    "pubmedqa": 1000
+  },
+  "question_word_len": {
+    "medmcqa": {
+      "median": 9.0,
+      "p90": 24.0,
+      "max": 233
+    },
+    "medqa": {
+      "median": 116.0,
+      "p90": 184.0,
+      "max": 552
+    },
+    "pubmedqa": {
+      "median": 13.0,
+      "p90": 18.0,
+      "max": 31
+    }
+  },
+  "answer_key_balance_pct": {
+    "medmcqa": {
+      "A": 29.38,
+      "B": 26.150000000000002,
+      "C": 23.189999999999998,
+      "D": 21.279999999999998
+    },
+    "medqa": {
+      "A": 25.650000000000002,
+      "B": 25.88,
+      "C": 25.35,
+      "D": 23.119999999999997
+    }
+  },
+  "medmcqa_subject_counts": {
+    "Medicine": 18177,
+    "Surgery": 17225,
+    "Pathology": 15214,
+    "Anatomy": 14793,
+    "Pharmacology": 13993,
+    "Social & Preventive Medicine": 12010,
+    "Microbiology": 11434,
+    "Dental": 10249,
+    "Gynaecology & Obstetrics": 10237,
+    "Physiology": 8996,
+    "Biochemistry": 8448,
+    "Pediatrics": 8269,
+    "Ophthalmology": 6990,
+    "Forensic Medicine": 5964,
+    "ENT": 4972,
+    "Radiology": 4463,
+    "Psychiatry": 4458,
+    "Anaesthesia": 3205,
+    "Orthopaedics": 3019,
+    "Unknown": 3002,
+    "Skin": 1788
+  },
+  "pubmedqa_label_counts": {
+    "yes": 552,
+    "no": 338,
+    "maybe": 110
+  },
+  "approx_prompt_tokens": {
+    "medmcqa": {
+      "median": 24.0,
+      "p95": 68.0
+    },
+    "medqa": {
+      "median": 169.0,
+      "p95": 289.0
+    },
+    "pubmedqa": {
+      "median": 282.5,
+      "p95": 405.14999999999986
+    }
+  },
+  "feature_correlations": {
+    "q_word_len": {
+      "q_word_len": 1.0,
+      "q_char_len": 0.996,
+      "opt_word_len_mean": 0.107,
+      "n_options": 0.014,
+      "context_word_len": -0.013,
+      "approx_prompt_tokens": 0.885,
+      "answer_idx_num": 0.031
+    },
+    "q_char_len": {
+      "q_word_len": 0.996,
+      "q_char_len": 1.0,
+      "opt_word_len_mean": 0.108,
+      "n_options": 0.009,
+      "context_word_len": -0.008,
+      "approx_prompt_tokens": 0.885,
+      "answer_idx_num": 0.032
+    },
+    "opt_word_len_mean": {
+      "q_word_len": 0.107,
+      "q_char_len": 0.108,
+      "opt_word_len_mean": 1.0,
+      "n_options": 0.092,
+      "context_word_len": -0.089,
+      "approx_prompt_tokens": 0.287,
+      "answer_idx_num": 0.039
+    },
+    "n_options": {
+      "q_word_len": 0.014,
+      "q_char_len": 0.009,
+      "opt_word_len_mean": 0.092,
+      "n_options": 1.0,
+      "context_word_len": -0.966,
+      "approx_prompt_tokens": -0.376,
+      "answer_idx_num": 0.001
+    },
+    "context_word_len": {
+      "q_word_len": -0.013,
+      "q_char_len": -0.008,
+      "opt_word_len_mean": -0.089,
+      "n_options": -0.966,
+      "context_word_len": 1.0,
+      "approx_prompt_tokens": 0.392,
+      "answer_idx_num": 0.0
+    },
+    "approx_prompt_tokens": {
+      "q_word_len": 0.885,
+      "q_char_len": 0.885,
+      "opt_word_len_mean": 0.287,
+      "n_options": -0.376,
+      "context_word_len": 0.392,
+      "approx_prompt_tokens": 1.0,
+      "answer_idx_num": 0.038
+    },
+    "answer_idx_num": {
+      "q_word_len": 0.031,
+      "q_char_len": 0.032,
+      "opt_word_len_mean": 0.039,
+      "n_options": 0.001,
+      "context_word_len": 0.0,
+      "approx_prompt_tokens": 0.038,
+      "answer_idx_num": 1.0
+    }
+  },
+  "top_terms": {
+    "examination": 2666,
+    "blood": 2231,
+    "diagnosis": 1899,
+    "pain": 1775,
+    "treatment": 1351,
+    "drug": 1325,
+    "pressure": 1276,
+    "physical": 1267,
+    "disease": 1251,
+    "physician": 1033,
+    "child": 1006,
+    "emergency": 942,
+    "temperature": 916,
+    "pulse": 887,
+    "syndrome": 871,
+    "test": 854,
+    "does": 848,
+    "reveals": 839,
+    "ago": 833,
+    "type": 802,
+    "brought": 778,
+    "rate": 776,
+    "months": 770,
+    "medical": 750,
+    "abdominal": 736
+  }
+}
