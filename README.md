@@ -15,9 +15,23 @@ the statistics and figures used in the report's **Data Summary** section
 |-------|--------|--------|
 | **1 — Prepare** | `src/prepare_data.py` | `data/processed/unified_medqa.parquet`, `reports/cleaning_report.json` |
 | **2 — EDA**     | `src/eda.py`          | `figures/fig01…fig08_*.png`, `reports/eda_stats.json` |
+| **3 — Baseline model** | `src/baseline_model.py`, `src/train_baseline.py` | `models/baseline_mcq.pt`, `reports/baseline_training_log.json`, `figures/fig09_baseline_training.png` |
+| **4 — Primary model (QLoRA)** | `src/train_qlora.py` · `notebooks/qlora_finetuning_colab.ipynb` | trained LoRA adapter (`qlora-medqa-adapter/`) — **requires a CUDA GPU** |
 
-An executed, output-rich walkthrough of both stages is in
-[`notebooks/data_cleaning_and_eda.ipynb`](notebooks/data_cleaning_and_eda.ipynb).
+Notebooks:
+- [`notebooks/data_cleaning_and_eda.ipynb`](notebooks/data_cleaning_and_eda.ipynb) — Stages 1–2 (cleaning + EDA), executed
+- [`notebooks/model_baseline_training.ipynb`](notebooks/model_baseline_training.ipynb) — Stage 3 (from-scratch model, training, predictions), executed
+- [`notebooks/qlora_finetuning_colab.ipynb`](notebooks/qlora_finetuning_colab.ipynb) — Stage 4 (primary QLoRA model); **run on a Colab GPU runtime**
+
+> The QLoRA stage fine-tunes a 7–8B model with 4-bit quantisation, which needs a
+> CUDA GPU (Colab T4 or better) and — for gated base models — a Hugging Face
+> token. It cannot run on CPU/Apple-MPS, so the notebook is provided unexecuted.
+
+`src/baseline_model.py` implements a compact Transformer **from scratch** (custom
+multi-head self-attention and encoder blocks — no `nn.Transformer`) as an
+answer-selection network; `src/train_baseline.py` trains it on the cleaned MCQ
+corpus and logs the training-loss / validation-accuracy curve. Run it with
+`python -m src.train_baseline` (uses CUDA / Apple-MPS / CPU automatically).
 
 ## Datasets (loaded from the Hugging Face Hub)
 
@@ -35,9 +49,14 @@ capstone-medqa/
 │   ├── config.py         # paths, dataset IDs, plotting palette
 │   ├── text_utils.py     # text normalization + length/token helpers
 │   ├── prepare_data.py   # Stage 1: load, clean, unify, derive features
-│   └── eda.py            # Stage 2: summary statistics + figures
+│   ├── eda.py            # Stage 2: summary statistics + figures
+│   ├── baseline_model.py # Stage 3: from-scratch Transformer (baseline)
+│   ├── train_baseline.py # Stage 3: baseline training loop
+│   └── train_qlora.py    # Stage 4: QLoRA fine-tuning of the primary LLM (GPU)
 ├── notebooks/
-│   └── data_cleaning_and_eda.ipynb   # executed end-to-end walkthrough
+│   ├── data_cleaning_and_eda.ipynb       # cleaning + EDA walkthrough
+│   ├── model_baseline_training.ipynb     # from-scratch model + training walkthrough
+│   └── qlora_finetuning_colab.ipynb      # Colab-ready QLoRA fine-tuning (GPU)
 ├── data/processed/       # cleaned unified corpus (parquet)
 ├── figures/              # generated EDA figures (PNG)
 ├── reports/              # cleaning_report.json, eda_stats.json
