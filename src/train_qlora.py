@@ -7,9 +7,9 @@ QLoRA quantises the pretrained weights to 4-bit and freezes them, training only
 small injected low-rank adapters; this makes a 7-8B model adaptable on a single
 GPU. The from-scratch model in ``baseline_model.py`` is the comparison baseline.
 
-REQUIRES A CUDA GPU (this will not run on CPU / Apple-MPS) and:
-    pip install "bitsandbytes==0.43.3" "transformers==4.44.2" "peft==0.12.0" \\
-                "accelerate==0.33.0" "trl==0.9.6" "datasets==2.21.0"
+REQUIRES A CUDA GPU (this will not run on CPU / Apple-MPS). Install only the
+packages Colab lacks (pinning old transformers/datasets downgrades numpy):
+    pip install -U peft bitsandbytes accelerate
 
 For gated base models (Mistral, Llama), accept the license on the Hugging Face
 Hub and authenticate with `huggingface-cli login` or the HF_TOKEN env variable.
@@ -21,10 +21,9 @@ import re
 
 import torch
 from datasets import Dataset, load_dataset
-from transformers import (AutoModelForCausalLM, AutoTokenizer,
-                          BitsAndBytesConfig, TrainingArguments)
+from transformers import (AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig,
+                          DataCollatorForLanguageModeling, Trainer, TrainingArguments)
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from trl import SFTTrainer
 
 # --------------------------------------------------------------------------- #
 # Configuration
@@ -167,6 +166,13 @@ def main():
     train_ds, val_recs = build_datasets(CFG, tokenizer.eos_token)
     print(f"Train examples: {len(train_ds):,} | Val examples: {len(val_recs):,}")
 
+    # Tokenise the formatted text; the collator builds causal-LM labels and pads.
+    def tokenize_fn(ex):
+        return tokenizer(ex["text"], truncation=True, max_length=CFG["max_seq_len"])
+
+    tokenized = train_ds.map(tokenize_fn, remove_columns=["text"])
+    collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
+
     train_args = TrainingArguments(
         output_dir=CFG["output_dir"],
         per_device_train_batch_size=CFG["batch_size"],
@@ -183,13 +189,11 @@ def main():
         gradient_checkpointing_kwargs={"use_reentrant": False},
         report_to="none",
     )
-    trainer = SFTTrainer(
+    trainer = Trainer(
         model=model,
-        tokenizer=tokenizer,
-        train_dataset=train_ds,
-        dataset_text_field="text",
-        max_seq_length=CFG["max_seq_len"],
         args=train_args,
+        train_dataset=tokenized,
+        data_collator=collator,
     )
     trainer.train()
 
